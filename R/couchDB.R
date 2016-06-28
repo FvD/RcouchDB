@@ -268,6 +268,21 @@ couch_attach <- function(location,
   result <- system(command)
 }
 
+#' @title List all documents in a database
+#' @description Lists all documents in a given database
+#' @param conn  A couchDB connection object
+#' @param database  The database to connect to.
+#' @param myOpts Additional options (not implemented in this version) 
+#' @return A list object with the values from the record.
+#' @export
+couch_list_all_docs <- function(conn, database, myOpts=NULL) {
+  if (!exists("database")) {warning("you must specify a database")}
+  result <- couch_fetch_raw(conn, database, "_all_docs", myOpts)
+  # TODO: httr docs warn against setting as = parsed. Content options
+  # should be put under myOpts and passed to content()
+  content(result, as = "parsed")
+}
+
 
 #' @title Fetch a document/record.
 #' @description Fetches a couch object based on the key
